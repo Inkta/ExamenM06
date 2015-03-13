@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Llibres</title>
+        <title>Productes</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
         
     </head>
@@ -12,23 +12,38 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="page-header">
-                      <h1>Llibres <small>per a totes les edats</small></h1>
+                      <h1>Productes <small>per a grans i petits</small></h1>
                     </div>
                 </div>
             </div>
+            <div class="row" style="margin-bottom:2rem;">
+                <div class="col-xs-6">
+                <h3>Busca Productes amb un preu inferior a 10€</h3>
+                <form>
+                      <button ng-click="menysde()" type="submit" class="btn btn-success">Busca!</button>
+                    </form>
+                    </div>
+                    <div class="col-xs-6">
+                <h3>Mostrals Tots!</h3>
+                <form>
+                      <button ng-click="refresh()" type="submit" class="btn btn-success">Busca!</button>
+                    </form>
+                    </div>
+            </div>
             <div class="row">
                 <div class="col-xs-6">
-                    <!-- Repetir model anterior -->
-                    <div class="llibres" ng-repeat="l in llibres">
+                    <div class="llibres" ng-repeat="p in productes">
+                        
                         <div class="panel panel-primary">
                             
-                            <p class="bg-primary">{{l.titol}}</p>
-                            <p> {{l.isbn}}</p>
+                            <p class="bg-primary">{{p.codi}}</p>
+                            <p> {{p.nom}}</p>
+                            <p> {{p.seccio}}</p>
+                            <p> {{p.preu}} €</p>
                             <div class="row">
                                 <div class="col-xs-12">
-                                    <!--Nom de la funcio a seleccionar quan fem click-->
-                                    <button ng-click="esborraLlibre(l.isbn)" class="btn btn-warning"> Esborra </button>
-                                    <button ng-click="editaLlibre(l.isbn, l.titol)" class="btn btn-success"> Edita </button>
+                                    <button ng-click="esborra(p.codi)" class="btn btn-warning"> Esborra </button>
+                                    <button ng-click="edita(p.codi, p.nom,p.seccio,p.preu)" class="btn btn-success"> Edita </button>
                                 </div>
                                 
                             </div>
@@ -38,33 +53,58 @@
                     </div>
                 </div>
                 <div class="col-xs-6">
-                    <h3> Llibre Nou </h3>
+                    <h3> Producte Nou </h3>
                     <div>
                         <form>
                           <div class="form-group">
-                            <label for="Titol">Titol</label>
-                            <!--Nom dels camps que s'envien al fer una peticio-->
-                            <input type="text" name="Titol" ng-model="titol" class="form-control" placeholder="Titol">
+                            <label for="Nom">Nom</label>
+                            <input type="text" name="Titol" ng-model="nom" class="form-control" placeholder="Nom">
                           </div>
                           <div class="form-group">
-                            <label for="Isbn">Isbn</label>
-                            <input type="text" name="Isbn" ng-model="isbn" class="form-control" placeholder="Isbn">
+                            <label for="Codi">Codi</label>
+                            <input type="text" name="Codi" ng-model="codi" class="form-control" placeholder="Codi">
                           </div>
-                          <button ng-click="afegirLlibre()" type="submit" class="btn btn-success">Submit</button>
+                          <div class="form-group">
+                                <label for="Seccio">Seccio</label>
+                            <input type="text" name="Seccio" ng-model="seccio" class="form-control" placeholder="Seccio">
+                          </div>
+                          <div class="form-group">
+                            <label for="Preu">Preu</label>
+                            <input type="text" name="Preu" ng-model="preu" class="form-control" placeholder="Preu">
+                          </div>
+                          <button ng-click="afegir()" type="submit" class="btn btn-success">Submit</button>
                         </form>
                     </div>
                     
-                    <h3> Editar Llibre </h3>
+                    <h3> Editar Producte </h3>
                     <form>
-                        <!--Valor dels camps que editarem quan seleccionem el model a editar-->
                       <div class="form-group">
-                        <label for="Titol">Titol</label>
-                        <input type="text" value="{{titolnou}}" ng-model="titolnou" class="form-control" placeholder="Titol">
+                        <label for="Nom">Codi</label>
+                        <input type="text" value="{{nomEditar}}" ng-model="nomEditar" class="form-control" placeholder="Nom">
                       </div>
                       <div class="form-group">
-                        <label for="Isbn">ISBN del llibre : {{editatIsbn}}</label>
+                        <label for="Codi">Codi del producte : {{codiEditar}}</label>
                       </div>
-                      <button ng-click="editatLlibre()" type="submit" class="btn btn-success">Submit</button>
+                      <div class="form-group">
+                        <label for="Seccio">Seccio</label>
+                        <input type="text" value="{{seccioEditar}}" ng-model="seccioEditar" class="form-control" placeholder="Seccio">
+                      </div>
+                      <div class="form-group">
+                        <label for="Preu">Preu</label>
+                        <input type="text" value="{{preuEditar}}" ng-model="preuEditar" class="form-control" placeholder="Preu">
+                      </div>
+                      <button ng-click="editat()" type="submit" class="btn btn-success">Submit</button>
+                    </form>
+                    
+                    
+                    <h3> Buscar Seccio en Particular </h3>
+                    <form>
+                      <div class="form-group">
+                        <label for="Seccio">Busca la seccio</label>
+                        <input type="text" value="{{seccioBusca}}" ng-model="seccioBusca" class="form-control" placeholder="Seccio">
+                      </div>
+                      
+                      <button ng-click="buscaSecc()" type="submit" class="btn btn-success">Submit</button>
                     </form>
                         
                 </div>

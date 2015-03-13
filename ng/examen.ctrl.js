@@ -1,41 +1,68 @@
   app.controller('examenCtrl', function($scope, ExamenServei) {
-      var id;
-      ExamenServei.query(function(llibres) {
-          $scope.resultat = resultat;
+    
+      ExamenServei.query(function(productes) {
+          $scope.productes = productes;
       });
       $scope.refresh = function() {
-          ExamenServei.query(function(resultat) {
-              $scope.resultat = resultat;
+          ExamenServei.query(function(productes) {
+              $scope.productes = productes;
           });
       }
+      
+      $scope.buscaSecc = function() {
+        ExamenServei.query(function(productes) {
+          $scope.productes = "";
+          var productesSeccio = [];
+              for (var i=0; i < productes.length; i++) {
+                  if (productes[i].seccio == $scope.seccioBusca)
+                  productesSeccio.push(productes[i]);
+              }
+              $scope.productes = productesSeccio;
+              
+          });
+      }
+      
+      $scope.menysde = function() {
+        ExamenServei.query(function(productes) {
+          $scope.productes = "";
+          var productesPreu = [];
+              for (var i=0; i < productes.length; i++) {
+                  if (productes[i].preu < 10)
+                  productesPreu.push(productes[i]);
+              }
+              $scope.productes = productesPreu;
+              
+          });
+      }
+      
       $scope.afegir = function() {
           ExamenServei.save({
-              isbn: $scope.isbn,
-              titol: $scope.titol,
-              autors: ["Marc"]
+              codi: $scope.codi,
+              nom: $scope.nom,
+              seccio: $scope.seccio,
+              preu: $scope.preu
           }, function() {
               $scope.refresh();
-              $scope.isbn = "";
-              $scope.titol = "";
           });
       }
-      $scope.edita = function(a,b) {
-          $scope.editatIsbn = a;
-          $scope.titolnou = b;
+      $scope.edita = function(a,b,c,d) {
+          $scope.codiEditar = a;
+          $scope.nomEditar = b;
+          $scope.seccioEditar = c;
+          $scope.preuEditar = d;
       }
+      
       $scope.editat = function() {
-          ExamenServei.update({id:$scope.editatIsbn}, {
-              isbn: $scope.editatIsbn,
-              titol: $scope.titolnou,
-              autors: ["Marc"]
-          }, function(llibre) {
+          ExamenServei.update({id:$scope.codiEditar}, {
+              nom: $scope.nomEditar,
+              seccio: $scope.seccioEditar,
+              preu: $scope.preuEditar
+          }, function(producte) {
               $scope.refresh();
-              $scope.editatIsbn = "";
-              $scope.titolnou = "";
           });
       }
-      $scope.esborra = function(isbn) {
-          ExamenServei.remove({id:isbn});
+      $scope.esborra = function(codi) {
+          ExamenServei.remove({id:codi});
           $scope.refresh();
       }
   });

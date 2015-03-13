@@ -1,22 +1,21 @@
 var db = require("../db");
-var Model = db.model('Model', {
-    isbn: {
+var Model = db.model('Article', {
+    codi: {
         type: String,
         required: true,
         unique: true,
     },
-    titol: {
+    nom: {
         type: String,
         required: true
     },
-    autors: {
-        type: [String],
+    seccio: {
+        type: String,
         required: true
     },
-    date: {
-        type: Date,
-        required: true,
-        default: Date.now   
+    preu: {
+        type: String,
+        required: true
     }
 });
 
