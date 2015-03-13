@@ -9,6 +9,7 @@
           });
       }
       
+      
       $scope.buscaSecc = function() {
         ExamenServei.query(function(productes) {
           $scope.productes = "";
